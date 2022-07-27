@@ -4,7 +4,7 @@ const ObjectId = require('mongodb').ObjectId
 const asyncLocalStorage = require('../../services/als.service')
 
 async function query(filterBy = {}) {
-    // console.log(filterBy)
+    console.log()
     const criteria = _buildCriteria(filterBy)
     try {
         const collection = await dbService.getCollection('stay')
