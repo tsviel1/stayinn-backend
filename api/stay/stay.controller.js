@@ -20,7 +20,7 @@ async function getStays(req, res) {
 
         // }
         // const stays = await stayService.query(filterBy)
-        const stays = await stayService.query()
+        const stays = await stayService.query(filterBy)
         res.send(stays)
     } catch (err) {
         logger.error('Failed to get stays', err)
