@@ -4,15 +4,17 @@ const ObjectId = require('mongodb').ObjectId
 const asyncLocalStorage = require('../../services/als.service')
 
 async function query(filterBy = {}) {
-    // console.log(filterBy)
+    console.log(filterBy, '1')
     const criteria = _buildCriteria(filterBy)
+    console.log(criteria, '2');
     try {
         const collection = await dbService.getCollection('stay')
-        var stays = await collection.find().toArray()
+        var stays = await collection.find(criteria).toArray()
         stays = stays.map(stay => {
             stay.createdAt = ObjectId(stay._id).getTimestamp()
             return stay
         })
+        // console.log(stays);
         return stays
     } catch (err) {
         logger.error('cannot find stays', err)
@@ -74,22 +76,21 @@ async function add(stay) {
     }
 }
 
-function _buildCriteria(filterBy) {
+function _buildCriteria(filterBy = { txt: '', category: 'beach', price: null, bedrooms: null, beds: null }) {
     const criteria = {}
-    // if (filterBy.txt) {
-    //     const txtCriteria = { $regex: filterBy.txt, $options: 'i' }
-    //     criteria.$or = [
-    //         {
-    //             stayname: txtCriteria
-    //         },
-    //         {
-    //             fullname: txtCriteria
-    //         }
-    //     ]
-    // }
-    // if (filterBy.minBalance) {
-    //     criteria.score = { $gte: filterBy.minBalance }
-    // }
+    console.log(filterBy, '3');
+    const { txt, category, price, bedrooms, beds } = filterBy
+    const txtCriteria = { $regex: txt, $options: 'i' }
+    if (txt) criteria.$or = [
+        {
+            'address.street': txtCriteria
+        },
+        {
+            ' address.country': txtCriteria
+        }
+    ]
+    if (category) criteria.tags = { $eq: category }
+    console.log(criteria, 'critiria');
     return criteria
 }
 
@@ -97,7 +98,6 @@ function _buildCriteria(filterBy) {
 module.exports = {
     query,
     getById,
-
     remove,
     update,
     add
