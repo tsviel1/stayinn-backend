@@ -14,6 +14,8 @@ async function getStay(req, res) {
 
 async function getStays(req, res) {
     try {
+        console.log(req.query)
+        const filterBy = req.query
         // const filterBy = {
 
         // }
