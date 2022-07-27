@@ -4,11 +4,7 @@ const ObjectId = require('mongodb').ObjectId
 const asyncLocalStorage = require('../../services/als.service')
 
 async function query(filterBy = {}) {
-<<<<<<< HEAD
-    console.log()
-=======
     console.log(filterBy, '1')
->>>>>>> c5451f2bf5018c5a89585019e626e245f1120241
     const criteria = _buildCriteria(filterBy)
     console.log(criteria, '2');
     try {
