@@ -46,35 +46,42 @@ async function remove(stayId) {
 
 async function update(stay) {
     try {
-        // peek only updatable properties
-        const stayToSave = {
-            _id: ObjectId(stay._id), // needed for the returnd obj
-            // Add the required fields
-            // do spread to stay object
-        }
-        const collection = await dbService.getCollection('stay')
-        await collection.updateOne({ _id: stayToSave._id }, { $set: stayToSave })
-        return stayToSave
+      var id = ObjectId(stay._id)
+      delete stay._id
+      const collection = await dbService.getCollection('stay')
+      await collection.updateOne({ _id: id }, { $set: { ...stay } })
+      return stay
     } catch (err) {
-        logger.error(`cannot update stay ${stay._id}`, err)
-        throw err
+      logger.error(`cannot update stay ${stay._id}`, err)
+      throw err
     }
-}
+  }
+
+// async function add(stay) {
+//     try {
+//         // peek only updatable fields!
+//         const stayToAdd = {
+//             // ...stay or do {fieldName, fieldname, ...... }
+//         }
+//         const collection = await dbService.getCollection('stay')
+//         await collection.insertOne(stayToAdd)
+//         return stayToAdd
+//     } catch (err) {
+//         logger.error('cannot insert stay', err)
+//         throw err
+//     }
+// }
 
 async function add(stay) {
     try {
-        // peek only updatable fields!
-        const stayToAdd = {
-            // ...stay or do {fieldName, fieldname, ...... }
-        }
-        const collection = await dbService.getCollection('stay')
-        await collection.insertOne(stayToAdd)
-        return stayToAdd
+      const collection = await dbService.getCollection('stay')
+      const addedStay = await collection.insertOne(stay)
+      return addedStay
     } catch (err) {
-        logger.error('cannot insert stay', err)
-        throw err
+      logger.error('cannot insert stay', err)
+      throw err
     }
-}
+  }
 
 function _buildCriteria(filterBy = { txt: '', category: 'beach', price: null, bedrooms: null, beds: null, capacity: null }) {
     const criteria = {}

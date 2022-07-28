@@ -1,6 +1,7 @@
 const stayService = require('./stay.service')
 const socketService = require('../../services/socket.service')
 const logger = require('../../services/logger.service')
+const dbService = require('../../services/db.service')
 
 async function getStay(req, res) {
     try {
@@ -28,16 +29,16 @@ async function getStays(req, res) {
     }
 }
 
-async function addStay(stay) {
+async function addStay(req, res) {
     try {
-        const collection = await dbService.getCollection('stay')
-        const addedStay = await collection.insertOne(stay)
-        return addedStay
+      const stay = req.body
+      const addedStay = await stayService.add(stay)
+      res.json(addedStay)
     } catch (err) {
-        logger.error('cannot insert stay', err)
-        throw err
+      logger.error('Failed to add stay', err)
+      res.status(500).send({ err: 'Failed to add stay' })
     }
-}
+  }
 
 async function deleteStay(req, res) {
     try {
