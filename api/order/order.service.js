@@ -3,12 +3,13 @@ const logger = require('../../services/logger.service')
 const ObjectId = require('mongodb').ObjectId
 const asyncLocalStorage = require('../../services/als.service')
 
-async function query() {
+async function query(user) {
     // console.log(filterBy)
-    // const criteria = _buildCriteria(filterBy)
+    const criteria = _buildCriteria(user)
     try {
         const collection = await dbService.getCollection('order')
-        var orders = await collection.find().toArray()
+        var orders = await collection.find(criteria).toArray()
+        console.log(orders)
         orders = orders.map(order => {
             order.createdAt = ObjectId(order._id).getTimestamp()
             return order
@@ -72,6 +73,18 @@ async function add(order) {
     }
 }
 
+
+function _buildCriteria(user) {
+
+    const { _id } = user
+    const criteria = {"stay.host._id" : _id}
+
+  
+    
+    // console.log('User id', _id);
+    return criteria
+
+}
 
 
 

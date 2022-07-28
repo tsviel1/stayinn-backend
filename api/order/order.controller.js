@@ -15,8 +15,8 @@ async function getOrder(req, res) {
 
 async function getOrders(req, res) {
     try {
-        console.log(req.query)
-        const orders = await orderService.query()
+        const user = req.query
+        const orders = await orderService.query(user)
         res.send(orders)
     } catch (err) {
         logger.error('Failed to get orders', err)
