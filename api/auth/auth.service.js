@@ -24,9 +24,9 @@ async function login(username, password) {
 // })()
     
 
-async function signup({username, password, fullname, imgUrl}) {
+async function signup({username, password, fullname, imgUrl = "https://xsgames.co/randomusers/assets/avatars/female/68.jpg"}) {
     const saltRounds = 10
-
+    console.log('in auth services')
     logger.debug(`auth.service - signup with username: ${username}, fullname: ${fullname}`)
     if (!username || !password || !fullname) return Promise.reject('Missing required signup information')
 
