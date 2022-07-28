@@ -76,10 +76,10 @@ async function add(stay) {
     }
 }
 
-function _buildCriteria(filterBy = { txt: '', category: 'beach', price: null, bedrooms: null, beds: null }) {
+function _buildCriteria(filterBy = { txt: '', category: 'beach', price: null, bedrooms: null, beds: null, capacity: null }) {
     const criteria = {}
     console.log(filterBy, '3');
-    const { txt, category, price, bedrooms, beds } = filterBy
+    const { txt, category, price, bedrooms, beds, capacity } = filterBy
     const txtCriteria = { $regex: txt, $options: 'i' }
     if (txt) criteria.$or = [
         {
@@ -90,8 +90,10 @@ function _buildCriteria(filterBy = { txt: '', category: 'beach', price: null, be
         }
     ]
     if (category) criteria.tags = { $eq: category }
-    console.log(criteria, 'critiria');
+    if (capacity) criteria.capacity = { $gte: +capacity }
+    console.log(capacity, 'critiria capacity');
     return criteria
+
 }
 
 
