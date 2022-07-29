@@ -13,6 +13,7 @@ module.exports = {
     add
 }
 
+
 async function query(filterBy = {}) {
     const criteria = _buildCriteria(filterBy)
     try {

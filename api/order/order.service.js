@@ -9,7 +9,7 @@ async function query(user) {
     try {
         const collection = await dbService.getCollection('order')
         var orders = await collection.find(criteria).toArray()
-        console.log(orders)
+        // console.log(orders)
         orders = orders.map(order => {
             order.createdAt = ObjectId(order._id).getTimestamp()
             return order
@@ -63,7 +63,7 @@ async function update(order) {
 async function add(order) {
     try {
         // peek only updatable fields!
-        console.log('hi')
+        // console.log(order)
         console.log('in order service')
         const collection = await dbService.getCollection('order')
         const addedOrder = await collection.insertOne(order)

@@ -2,6 +2,8 @@ const orderService = require('./order.service')
 const dbService = require('../../services/db.service')
 const socketService = require('../../services/socket.service')
 const logger = require('../../services/logger.service')
+const userService = require('../user/user.service')
+// const authService = require('../auth/auth.service')
 
 async function getOrder(req, res) {
     try {
@@ -24,10 +26,15 @@ async function getOrders(req, res) {
     }
 }
 async function addOrder(req, res) {
+    // var loggedinUser = authService.validateToken(req.cookies.loginToken)
     try {
-      const order = req.body
-      console.log(order)
-      const addedOrder = await orderService.add(order)
+        const order = req.body
+        const hostId = order.stay.host._id
+        const loggedinUser = order.by._id
+        //   console.log(order)
+        const addedOrder = await orderService.add(order)
+      socketService.broadcast({type: 'order-sent', data: order, userId: loggedinUser})
+      socketService.emitToUser({type: 'order-recieved', data: order, userId: hostId})
       res.json(addedOrder)
     } catch (err) {
       logger.error('Failed to add order', err)
