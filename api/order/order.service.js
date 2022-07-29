@@ -63,7 +63,7 @@ async function update(order) {
 async function add(order) {
     try {
         // peek only updatable fields!
-        console.log(order)
+        console.log('hi')
         console.log('in order service')
         const collection = await dbService.getCollection('order')
         const addedOrder = await collection.insertOne(order)
