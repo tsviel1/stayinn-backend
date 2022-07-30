@@ -33,7 +33,8 @@ async function addOrder(req, res) {
         const loggedinUser = order.by._id
         order.by._id = loggedinUser
         const hostId = order.stay.host._id
-        //   console.log(order)
+          console.log(hostId)
+          console.log(typeof hostId)
         const addedOrder = await orderService.add(order)
       socketService.broadcast({type: 'order-sent', data: order, userId: loggedinUser})
       socketService.emitToUser({type: 'order-recieved', data: order, userId: hostId})
