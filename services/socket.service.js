@@ -85,7 +85,9 @@ async function broadcast({ type, data, room = null, userId }) {
 
 async function _getUserSocket(userId) {
     const sockets = await _getAllSockets()
+    sockets.map(socket=>console.log(socket.userId))
     const socket = sockets.find(s => s.userId === userId)
+
     return socket
 }
 async function _getAllSockets() {
