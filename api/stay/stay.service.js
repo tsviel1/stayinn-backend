@@ -98,7 +98,17 @@ function _buildCriteria(filterBy = { txt: '', category: 'beach', price: null, be
     ]
     if (category) criteria.tags = { $eq: category }
     if (capacity) criteria.capacity = { $gte: +capacity }
-    console.log(capacity, 'critiria capacity');
+    if(price) criteria.$and= [
+        {
+            price:{$gt: +price.min}
+        },
+        {
+            price:{$lt: +price.max}
+        }
+    ]
+    if (bedrooms) criteria.bedrooms={$gte: +bedrooms}
+    if (beds) criteria.beds={$gte: +beds}
+    console.log(criteria, 'critiria ');
     return criteria
 
 }

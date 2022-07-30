@@ -3,7 +3,7 @@ const dbService = require('../../services/db.service')
 const socketService = require('../../services/socket.service')
 const logger = require('../../services/logger.service')
 const userService = require('../user/user.service')
-// const authService = require('../auth/auth.service')
+const authService = require('../auth/auth.service')
 
 async function getOrder(req, res) {
     try {
@@ -27,10 +27,12 @@ async function getOrders(req, res) {
 }
 async function addOrder(req, res) {
     // var loggedinUser = authService.validateToken(req.cookies.loginToken)
+    
     try {
         const order = req.body
-        const hostId = order.stay.host._id
         const loggedinUser = order.by._id
+        order.by._id = loggedinUser
+        const hostId = order.stay.host._id
         //   console.log(order)
         const addedOrder = await orderService.add(order)
       socketService.broadcast({type: 'order-sent', data: order, userId: loggedinUser})
