@@ -5,6 +5,20 @@ const logger = require('../../services/logger.service')
 const userService = require('../user/user.service')
 const authService = require('../auth/auth.service')
 
+// Tbc onapprove
+async function onApprove(req, res) {
+    try {
+        const order = req.body
+        const guestId = order.by._id
+        order.by._id = guestId
+        const hostId = order.stay.host._id
+        socketService.emitToUser({type: 'order-approved', data: order, userId: guestId})
+    }
+    catch (err) {
+
+    }
+}
+
 async function getOrder(req, res) {
     try {
         const order = await orderService.getById(req.params.id)
@@ -33,10 +47,12 @@ async function addOrder(req, res) {
         const loggedinUser = order.by._id
         order.by._id = loggedinUser
         const hostId = order.stay.host._id
+        console.log(hostId);
         //   console.log(order)
         const addedOrder = await orderService.add(order)
-      socketService.broadcast({type: 'order-sent', data: order, userId: loggedinUser})
-      socketService.emitToUser({type: 'order-recieved', data: order, userId: hostId})
+    //   socketService.broadcast({type: 'order-sent', data: order, userId: loggedinUser})
+    // emitting order-sent message to only the host of the apartment that was ordered.
+      socketService.emitToUser({type: 'order-sent', data: order, userId: hostId})
       res.json(addedOrder)
     } catch (err) {
       logger.error('Failed to add order', err)

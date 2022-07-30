@@ -46,16 +46,16 @@ async function remove(stayId) {
 
 async function update(stay) {
     try {
-      var id = ObjectId(stay._id)
-      delete stay._id
-      const collection = await dbService.getCollection('stay')
-      await collection.updateOne({ _id: id }, { $set: { ...stay } })
-      return stay
+        var id = ObjectId(stay._id)
+        delete stay._id
+        const collection = await dbService.getCollection('stay')
+        await collection.updateOne({ _id: id }, { $set: { ...stay } })
+        return stay
     } catch (err) {
-      logger.error(`cannot update stay ${stay._id}`, err)
-      throw err
+        logger.error(`cannot update stay ${stay._id}`, err)
+        throw err
     }
-  }
+}
 
 // async function add(stay) {
 //     try {
@@ -74,14 +74,14 @@ async function update(stay) {
 
 async function add(stay) {
     try {
-      const collection = await dbService.getCollection('stay')
-      const addedStay = await collection.insertOne(stay)
-      return addedStay
+        const collection = await dbService.getCollection('stay')
+        const addedStay = await collection.insertOne(stay)
+        return addedStay
     } catch (err) {
-      logger.error('cannot insert stay', err)
-      throw err
+        logger.error('cannot insert stay', err)
+        throw err
     }
-  }
+}
 
 function _buildCriteria(filterBy = { txt: '', category: 'beach', price: null, bedrooms: null, beds: null, capacity: null }) {
     const criteria = {}
@@ -98,16 +98,12 @@ function _buildCriteria(filterBy = { txt: '', category: 'beach', price: null, be
     ]
     if (category) criteria.tags = { $eq: category }
     if (capacity) criteria.capacity = { $gte: +capacity }
-    if(price) criteria.$and= [
-        {
-            price:{$gt: +price.min}
-        },
-        {
-            price:{$lt: +price.max}
-        }
-    ]
-    if (bedrooms) criteria.bedrooms={$gte: +bedrooms}
-    if (beds) criteria.beds={$gte: +beds}
+    if (price) {
+        var newPrice = JSON.parse(price)
+        criteria.price = { $gte:parseInt(newPrice.min) , $lte:parseInt(newPrice.max) }
+    }
+    if (bedrooms) criteria.bedrooms = { $gte: +bedrooms }
+    if (beds) criteria.beds = { $gte: +beds }
     console.log(criteria, 'critiria ');
     return criteria
 
