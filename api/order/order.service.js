@@ -48,6 +48,7 @@ async function update(order) {
         // peek only updatable properties
         const orderToSave = {
             _id: ObjectId(order._id), // needed for the returnd obj
+            ...order
             // Add the required fields
             // do spread to order object
         }
