@@ -6,7 +6,7 @@ async function setupAsyncLocalStorage(req, res, next) {
   asyncLocalStorage.run(storage, () => {
     if (!req.cookies) return next()
     const loggedinUser = authService.validateToken(req.cookies.loginToken)
-
+// cookie is null, so validet token is undefined
     if (loggedinUser) {
       const alsStore = asyncLocalStorage.getStore()
       alsStore.loggedinUser = loggedinUser
