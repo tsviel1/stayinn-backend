@@ -46,15 +46,13 @@ async function remove(orderId) {
 
 async function update(order) {
     try {
-        // peek only updatable properties
         const orderToSave = {
-            _id: ObjectId(order._id), // needed for the returnd obj
             ...order,
-            // Add the required fields
-            // do spread to order object
         }
+        orderToSave._id = ObjectId(orderToSave._id)
         const collection = await dbService.getCollection('order')
         await collection.updateOne({ _id: orderToSave._id }, { $set: orderToSave })
+        // await collection.updateOne({ _id: orderToSave._id }, { $set: orderToSave })
         return orderToSave
     } catch (err) {
         logger.error(`cannot update order ${order._id}`, err)

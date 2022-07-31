@@ -76,6 +76,7 @@ async function deleteOrder(req, res) {
 async function updateOrder(req, res) {
   try {
     const order = req.body
+    // console.log('CONTROLLER', order)
     const guestId = order.by._id
     order.by._id = guestId
     if (order.status === 'approved') {
