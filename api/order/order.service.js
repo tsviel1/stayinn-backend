@@ -14,6 +14,7 @@ async function query(user) {
             order.createdAt = ObjectId(order._id).getTimestamp()
             return order
         })
+        // console.log('order srvices back', orders)
         return orders
     } catch (err) {
         logger.error('cannot find orders', err)
@@ -45,14 +46,13 @@ async function remove(orderId) {
 
 async function update(order) {
     try {
-        // peek only updatable properties
         const orderToSave = {
-            _id: ObjectId(order._id), // needed for the returnd obj
-            // Add the required fields
-            // do spread to order object
+            ...order,
         }
+        orderToSave._id = ObjectId(orderToSave._id)
         const collection = await dbService.getCollection('order')
         await collection.updateOne({ _id: orderToSave._id }, { $set: orderToSave })
+        // await collection.updateOne({ _id: orderToSave._id }, { $set: orderToSave })
         return orderToSave
     } catch (err) {
         logger.error(`cannot update order ${order._id}`, err)
