@@ -8,7 +8,7 @@ async function query(user) {
     const criteria = _buildCriteria(user)
     try {
         const collection = await dbService.getCollection('order')
-        var orders = await collection.find(criteria).toArray()
+        var orders = await collection.find(criteria).sort({createdAt: - 1}).toArray()
         // console.log(orders)
         orders = orders.map(order => {
             order.createdAt = ObjectId(order._id).getTimestamp()

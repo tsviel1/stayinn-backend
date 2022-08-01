@@ -86,7 +86,7 @@ async function add(stay) {
 function _buildCriteria(filterBy = { txt: '', category: 'beach', price: null, bedrooms: null, beds: null, capacity: null }) {
     const criteria = {}
     console.log(filterBy, '3');
-    const { txt, category, price, bedrooms, beds, capacity } = filterBy
+    const { txt, category, price, bedrooms, beds, capacity, hostId } = filterBy
     const txtCriteria = { $regex: txt, $options: 'i' }
     if (txt) criteria.$or = [
         {
@@ -104,6 +104,10 @@ function _buildCriteria(filterBy = { txt: '', category: 'beach', price: null, be
     }
     if (bedrooms) criteria.bedrooms = { $gte: +bedrooms }
     if (beds) criteria.beds = { $gte: +beds }
+    if (hostId) {
+
+        criteria["host._id"] = { $eq: hostId }
+    }
     console.log(criteria, 'critiria ');
     return criteria
 
