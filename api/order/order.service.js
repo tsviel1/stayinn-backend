@@ -8,8 +8,9 @@ async function query(user) {
     const criteria = _buildCriteria(user)
     try {
         const collection = await dbService.getCollection('order')
+        // var orders = await collection.find(criteria).toArray()
         var orders = await collection.find(criteria).sort({createdAt: - 1}).toArray()
-        // console.log(orders)
+        console.log(orders)
         orders = orders.map(order => {
             order.createdAt = ObjectId(order._id).getTimestamp()
             return order
@@ -65,6 +66,7 @@ async function add(order) {
         // peek only updatable fields!
         // console.log(order)
         console.log('in order service')
+        order.createdAt=ObjectId(order._id).getTimestamp()
         const collection = await dbService.getCollection('order')
         const addedOrder = await collection.insertOne(order)
         return addedOrder
