@@ -1,3 +1,5 @@
 node_modules
 logs
 dev1.js
+dev1
+./config/dev1
