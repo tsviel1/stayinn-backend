@@ -3,3 +3,6 @@ logs
 dev1.js
 dev1
 ./config/dev1
+dev2
+./config/dev2
+dev2.js
