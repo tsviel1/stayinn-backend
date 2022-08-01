@@ -105,7 +105,7 @@ function _buildCriteria(filterBy = { txt: '', category: 'beach', price: null, be
     if (bedrooms) criteria.bedrooms = { $gte: +bedrooms }
     if (beds) criteria.beds = { $gte: +beds }
     if (hostId) {
-
+         
         criteria["host._id"] = { $eq: hostId }
     }
     console.log(criteria, 'critiria ');
