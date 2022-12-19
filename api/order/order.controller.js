@@ -33,7 +33,6 @@ async function getOrders(req, res) {
   try {
     const user = req.query
     const orders = await orderService.query(user)
-    // console.log('order controller', orders)
     res.send(orders)
   } catch (err) {
     logger.error('Failed to get orders', err)
@@ -76,11 +75,9 @@ async function deleteOrder(req, res) {
 async function updateOrder(req, res) {
   try {
     const order = req.body
-    // console.log('CONTROLLER', order)
     const guestId = order.by._id
     order.by._id = guestId
     if (order.status === 'approved') {
-      // const hostId = order.stay.host._id
       socketService.emitToUser({
         type: 'order-approved',
         data: order,

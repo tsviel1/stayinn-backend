@@ -4,9 +4,7 @@ const ObjectId = require('mongodb').ObjectId
 const asyncLocalStorage = require('../../services/als.service')
 
 async function query(filterBy = {}) {
-    console.log(filterBy, '1')
     const criteria = _buildCriteria(filterBy)
-    console.log(criteria, '2');
     try {
         const collection = await dbService.getCollection('stay')
         var stays = await collection.find(criteria).toArray()
@@ -14,7 +12,6 @@ async function query(filterBy = {}) {
             stay.createdAt = ObjectId(stay._id).getTimestamp()
             return stay
         })
-        // console.log(stays);
         return stays
     } catch (err) {
         logger.error('cannot find stays', err)
@@ -85,7 +82,6 @@ async function add(stay) {
 
 function _buildCriteria(filterBy = { txt: '', category: 'beach', price: null, bedrooms: null, beds: null, capacity: null }) {
     const criteria = {}
-    console.log(filterBy, '3');
     const { txt, category, price, bedrooms, beds, capacity, hostId } = filterBy
     const txtCriteria = { $regex: txt, $options: 'i' }
     if (txt) criteria.$or = [
@@ -105,12 +101,9 @@ function _buildCriteria(filterBy = { txt: '', category: 'beach', price: null, be
     if (bedrooms) criteria.bedrooms = { $gte: +bedrooms }
     if (beds) criteria.beds = { $gte: +beds }
     if (hostId) {
-         
         criteria["host._id"] = { $eq: hostId }
     }
-    console.log(criteria, 'critiria ');
     return criteria
-
 }
 
 

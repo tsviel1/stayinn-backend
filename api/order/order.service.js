@@ -4,18 +4,15 @@ const ObjectId = require('mongodb').ObjectId
 const asyncLocalStorage = require('../../services/als.service')
 
 async function query(user) {
-    // console.log(filterBy)
     const criteria = _buildCriteria(user)
     try {
         const collection = await dbService.getCollection('order')
         // var orders = await collection.find(criteria).toArray()
         var orders = await collection.find(criteria).sort({createdAt: - 1}).toArray()
-        console.log(orders)
         orders = orders.map(order => {
             order.createdAt = ObjectId(order._id).getTimestamp()
             return order
         })
-        // console.log('order srvices back', orders)
         return orders
     } catch (err) {
         logger.error('cannot find orders', err)
@@ -64,7 +61,6 @@ async function update(order) {
 async function add(order) {
     try {
         // peek only updatable fields!
-        // console.log(order)
         console.log('in order service')
         order.createdAt=ObjectId(order._id).getTimestamp()
         const collection = await dbService.getCollection('order')
@@ -78,15 +74,9 @@ async function add(order) {
 
 
 function _buildCriteria(user) {
-
     const { _id } = user
     const criteria = {"stay.host._id" : _id}
-
-  
-    
-    // console.log('User id', _id);
     return criteria
-
 }
 
 
@@ -94,7 +84,6 @@ function _buildCriteria(user) {
 module.exports = {
     query,
     getById,
-
     remove,
     update,
     add

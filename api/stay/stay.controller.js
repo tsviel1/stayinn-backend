@@ -15,12 +15,7 @@ async function getStay(req, res) {
 
 async function getStays(req, res) {
     try {
-        console.log(req.query)
         const filterBy = req.query
-        // const filterBy = {
-
-        // }
-        // const stays = await stayService.query(filterBy)
         const stays = await stayService.query(filterBy)
         res.send(stays)
     } catch (err) {
