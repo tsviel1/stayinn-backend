@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     console.log(process.env.NODE_ENV)
     const corsOptions = {
-        origin: ['http://127.0.0.1:5173', 'http://127.0.0.1:8080', 'http://localhost:8080', 'http://127.0.0.1:3000', 'http://localhost:3000', 'http://localhost:5173','http://127.0.0.1:5176','http://127.0.0.1:5174'],
+        origin: ['http://127.0.0.1:5173', 'http://127.0.0.1:8080', 'http://localhost:8080', 'http://127.0.0.1:3000', 'http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:5176', 'http://127.0.0.1:5174'],
         credentials: true
     }
     app.use(cors(corsOptions))
@@ -26,7 +26,7 @@ const authRoutes = require('./api/auth/auth.routes')
 const userRoutes = require('./api/user/user.routes')
 const stayRoutes = require('./api/stay/stay.routes')
 const orderRoutes = require('./api/order/order.routes')
-const {setupSocketAPI} = require('./services/socket.service')
+const { setupSocketAPI } = require('./services/socket.service')
 
 // routes
 const setupAsyncLocalStorage = require('./middlewares/setupAls.middleware')

@@ -1,9 +1,6 @@
 const orderService = require('./order.service')
-const dbService = require('../../services/db.service')
 const socketService = require('../../services/socket.service')
 const logger = require('../../services/logger.service')
-const userService = require('../user/user.service')
-const authService = require('../auth/auth.service')
 
 // Tbc onapprove
 // async function onApprove(req, res) {

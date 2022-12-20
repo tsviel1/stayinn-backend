@@ -1,4 +1,3 @@
-
 const dbService = require('../../services/db.service')
 const logger = require('../../services/logger.service')
 const reviewService = require('../stay/stay.service')
@@ -12,7 +11,6 @@ module.exports = {
     update,
     add
 }
-
 
 async function query(filterBy = {}) {
     const criteria = _buildCriteria(filterBy)
@@ -38,19 +36,18 @@ async function getById(userId) {
         const collection = await dbService.getCollection('user')
         const user = await collection.findOne({ _id: ObjectId(userId) })
         delete user.password
-
         user.givenReviews = await reviewService.query({ byUserId: ObjectId(user._id) })
         user.givenReviews = user.givenReviews.map(review => {
             delete review.byUser
             return review
         })
-
         return user
     } catch (err) {
         logger.error(`while finding user by id: ${userId}`, err)
         throw err
     }
 }
+
 async function getByUsername(username) {
     try {
         const collection = await dbService.getCollection('user')
@@ -78,7 +75,6 @@ async function update(user) {
         const userToSave = {
             _id: ObjectId(user._id), // needed for the returnd obj
             fullname: user.fullname,
-
         }
         const collection = await dbService.getCollection('user')
         await collection.updateOne({ _id: userToSave._id }, { $set: userToSave })

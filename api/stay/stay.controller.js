@@ -1,7 +1,5 @@
 const stayService = require('./stay.service')
-const socketService = require('../../services/socket.service')
 const logger = require('../../services/logger.service')
-const dbService = require('../../services/db.service')
 
 async function getStay(req, res) {
     try {
